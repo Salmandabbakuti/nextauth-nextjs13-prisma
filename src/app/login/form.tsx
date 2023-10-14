@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import Image from "next/image";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -20,8 +21,6 @@ export const LoginForm = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      setFormValues({ email: "", password: "" });
-
       const res = await signIn("credentials", {
         redirect: false,
         email: formValues.email,
@@ -35,7 +34,7 @@ export const LoginForm = () => {
       if (!res?.error) {
         router.push(callbackUrl);
       } else {
-        setError("invalid email or password");
+        setError("Incorrect email or password");
       }
     } catch (error: any) {
       setLoading(false);
@@ -85,7 +84,7 @@ export const LoginForm = () => {
         className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
         disabled={loading}
       >
-        {loading ? "loading..." : "Sign In"}
+        {loading ? "Loading..." : "Sign In"}
       </button>
 
       <p className="text-center mt-4">
@@ -105,7 +104,9 @@ export const LoginForm = () => {
         onClick={() => signIn("google", { callbackUrl })}
         role="button"
       >
-        <img
+        <Image
+          width={40}
+          height={50}
           className="pr-2"
           src="/images/google.svg"
           alt=""
@@ -119,7 +120,9 @@ export const LoginForm = () => {
         onClick={() => signIn("github", { callbackUrl })}
         role="button"
       >
-        <img
+        <Image
+          width={40}
+          height={50}
           className="pr-2"
           src="/images/github.svg"
           alt=""

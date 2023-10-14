@@ -1,7 +1,7 @@
 "use client";
-
 import { signIn } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
@@ -12,10 +12,11 @@ export const RegisterForm = () => {
   });
   const [error, setError] = useState("");
 
+  const router = useRouter();
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setFormValues({ name: "", email: "", password: "" });
 
     try {
       const res = await fetch("/api/register", {
@@ -28,11 +29,10 @@ export const RegisterForm = () => {
 
       setLoading(false);
       if (!res.ok) {
-        setError((await res.json()).message);
-        return;
+        const message = (await res.json()).message;
+        return setError(message);
       }
-
-      signIn(undefined, { callbackUrl: "/" });
+      router.push("/login");
     } catch (error: any) {
       setLoading(false);
       setError(error);
@@ -92,7 +92,7 @@ export const RegisterForm = () => {
         className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
         disabled={loading}
       >
-        {loading ? "loading..." : "Sign Up"}
+        {loading ? "Loading..." : "Sign Up"}
       </button>
 
       <p className="text-center mt-4">
