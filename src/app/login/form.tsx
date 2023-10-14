@@ -53,6 +53,7 @@ export const LoginForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
+      <h2 className="text-center text-2xl font-semibold mb-6">Welcome</h2>
       {error && (
         <p className="text-center bg-red-300 py-4 mb-6 rounded">{error}</p>
       )}
@@ -86,6 +87,13 @@ export const LoginForm = () => {
       >
         {loading ? "loading..." : "Sign In"}
       </button>
+
+      <p className="text-center mt-4">
+        Dont have an account?{" "}
+        <a href="/register" className="text-blue-600">
+          Sign Up
+        </a>
+      </p>
 
       <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
         <p className="text-center font-semibold mx-4 mb-0">OR</p>

@@ -24,10 +24,10 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
     maxAge: 2 * 24 * 60 * 60 // 2 days
   },
-  secret: process.env.SECRET,
-  jwt: {
-    secret: process.env.JWT_SECRET
-  },
+  secret: process.env.NEXTAUTH_SECRET,
+  // jwt: {
+  //   secret: process.env.JWT_SECRET
+  // },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,

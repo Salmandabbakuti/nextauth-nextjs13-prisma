@@ -49,6 +49,7 @@ export const RegisterForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
+      <h2 className="text-center text-2xl font-semibold mb-6">Sign Up</h2>
       {error && (
         <p className="text-center bg-red-300 py-4 mb-6 rounded">{error}</p>
       )}
@@ -93,6 +94,13 @@ export const RegisterForm = () => {
       >
         {loading ? "loading..." : "Sign Up"}
       </button>
+
+      <p className="text-center mt-4">
+        Already have an account?{" "}
+        <a href="/login" className="text-blue-600">
+          Sign In
+        </a>
+      </p>
     </form>
   );
 };

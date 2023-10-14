@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { hash } from "bcryptjs";
+import { hashSync } from "bcryptjs";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -9,27 +9,31 @@ export async function POST(req: Request) {
       email: string;
       password: string;
     };
-    const hashed_password = await hash(password, 12);
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
+    if (user) throw new Error("Email already in use");
 
-    const user = await prisma.user.create({
+    const hashedPassword = hashSync(password, 12);
+    const newUser = await prisma.user.create({
       data: {
         name,
         email: email.toLowerCase(),
-        password: hashed_password,
-      },
+        password: hashedPassword
+      }
     });
 
     return NextResponse.json({
       user: {
-        name: user.name,
-        email: user.email,
-      },
+        name: newUser.name,
+        email: newUser.email
+      }
     });
   } catch (error: any) {
     return new NextResponse(
       JSON.stringify({
-        status: "error",
-        message: error.message,
+        code: "USER_EXISTS",
+        message: error.message
       }),
       { status: 500 }
     );
